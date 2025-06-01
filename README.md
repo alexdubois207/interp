@@ -9,7 +9,7 @@ def interpolate_1d(train, method_name):
     for exp in train['exp_y'].unique():
         subset = train[train['exp_y'] == exp]
 
-        # First interpolate across strikes (within each fixed maturity)
+
         intermediate = []
         for mat in subset['mat_y'].unique():
             sub = subset[subset['mat_y'] == mat]
@@ -46,7 +46,7 @@ def interpolate_1d(train, method_name):
 
         interpolated_strike = pd.concat(intermediate, ignore_index=True)
 
-        # Now interpolate across maturities (for each fixed strike)
+
         for strike_val in interpolated_strike['strike'].unique():
             sub = interpolated_strike[interpolated_strike['strike'] == strike_val]
             known = sub.dropna(subset=['vol_tmp'])
@@ -148,6 +148,5 @@ for method in methods_2d:
         train = train.merge(df, on=['mat_y', 'exp_y', 'strike'], how='left')
         interpolated_dfs.append(df)
 
-# Evaluate
 evaluation_results = evaluate_methods(train, interpolated_dfs)
 evaluation_results
